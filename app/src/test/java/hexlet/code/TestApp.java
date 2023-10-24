@@ -2,7 +2,7 @@ package hexlet.code;
 
 import org.junit.jupiter.api.Test;
 
-public class TestValidator {
+public class TestApp {
     @Test
     public void testValidator1() {
         Validator v = new Validator();
