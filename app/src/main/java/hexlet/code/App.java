@@ -7,7 +7,8 @@ public class App {
         StringSchema schema = v.string();
 
         // Пока не вызван метод required(), null и пустая строка считаются валидным
-        schema.isValid(""); // true
-        schema.isValid(null); // true
+        System.out.println(schema.isValid("")); // true
+        System.out.println(schema.isValid(null)); // true
+
     }
 }
