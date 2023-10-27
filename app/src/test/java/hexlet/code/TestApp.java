@@ -2,30 +2,93 @@ package hexlet.code;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class TestApp {
     @Test
-    public void testValidator1() {
+    public void testValidatorString() {
         Validator v = new Validator();
 
         StringSchema schema = v.string();
 
         // Пока не вызван метод required(), null и пустая строка считаются валидным
-        schema.isValid(""); // true
+        assertThat(schema.isValid("")).isTrue(); // true
+        assertThat(schema.isValid(null)).isTrue(); // true
+
+        schema.required();
+
+        assertThat(schema.isValid(null)).isFalse(); // false
+        assertThat(schema.isValid("")).isFalse(); // false
+        assertThat(schema.isValid(5)).isFalse(); // false
+        assertThat(schema.isValid("what does the fox say")).isTrue(); // true
+        assertThat(schema.isValid("hexlet")).isTrue(); // true
+
+        assertThat(schema.contains("wh").isValid("what does the fox say")).isTrue(); // true
+        assertThat(schema.contains("what").isValid("what does the fox say")).isTrue(); // true
+        assertThat(schema.contains("whatthe").isValid("what does the fox say")).isFalse(); // false
+
+        assertThat(schema.isValid("what does the fox say")).isFalse(); // false
+    }
+    @Test
+    public void testValidatorNumber() {
+        Validator v = new Validator();
+
+        NumberSchema schema = v.number();
+
+// Пока не вызван метод required(), null считается валидным
+        assertThat(schema.isValid(null)).isTrue(); // true
+        assertThat(schema.positive().isValid(null)).isTrue(); // true
+
+        schema.required();
+
+        assertThat(schema.isValid(null)).isFalse(); // false
+        assertThat(schema.isValid("5")).isFalse(); // false
+        assertThat(schema.isValid(10)).isTrue(); // true
+
+// Потому что ранее мы вызвали метод positive()
+        assertThat(schema.isValid(-10)).isFalse(); // false
+//  Ноль — не положительное число
+        assertThat(schema.isValid(0)).isFalse(); // false
+
+        schema.range(5, 10);
+
+        assertThat(schema.isValid(5)).isTrue(); // true
+        assertThat(schema.isValid(10)).isTrue(); // true
+        assertThat(schema.isValid(4)).isFalse(); // false
+        assertThat(schema.isValid(11)).isFalse(); // false
+
+        schema.range(null, 10);
+        assertThat(schema.isValid(1)).isTrue(); // true
+        assertThat(schema.isValid(11)).isFalse();
+
+        schema.range(10, null);
+        assertThat(schema.isValid(100)).isTrue(); // true
+        assertThat(schema.isValid(9)).isFalse();
+    }
+
+    @Test
+    public void testMap() {
+        Validator v = new Validator();
+
+        MapSchema schema = v.map();
+
         schema.isValid(null); // true
 
         schema.required();
 
-        schema.isValid(null); // false
-        schema.isValid(""); // false
-        schema.isValid(5); // false
-        schema.isValid("what does the fox say"); // true
-        schema.isValid("hexlet"); // true
+        assertThat(schema.isValid(null)).isFalse(); // false
+        assertThat(schema.isValid(new HashMap())).isTrue(); // true
+        Map<String, String> data = new HashMap<>();
+        data.put("key1", "value1");
+        assertThat(schema.isValid(data)).isTrue(); // true
 
-        schema.contains("wh").isValid("what does the fox say"); // true
-        schema.contains("what").isValid("what does the fox say"); // true
-        schema.contains("whatthe").isValid("what does the fox say"); // false
+        schema.sizeof(2);
 
-        schema.isValid("what does the fox say"); // false
+        assertThat(schema.isValid(data)).isFalse();  // false
+        data.put("key2", "value2");
+        assertThat(schema.isValid(data)).isTrue(); // true
     }
-
 }

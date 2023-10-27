@@ -1,14 +1,20 @@
 package hexlet.code;
 
+
+import java.util.HashMap;
+
 public class App {
     public static void main(String[] args) {
         Validator v = new Validator();
 
-        StringSchema schema = v.string();
+        MapSchema schema = v.map();
 
-        // Пока не вызван метод required(), null и пустая строка считаются валидным
-        System.out.println(schema.isValid("")); // true
-        System.out.println(schema.isValid(null)); // true
+        schema.isValid(null); // true
+
+        schema.required();
+
+        schema.isValid(null); // false
+        schema.isValid(new HashMap()); // true
 
     }
 }
