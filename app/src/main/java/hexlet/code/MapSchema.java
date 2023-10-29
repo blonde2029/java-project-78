@@ -1,19 +1,38 @@
 package hexlet.code;
 
+import java.util.Map;
+import java.util.function.Predicate;
+
 public class MapSchema extends BaseSchema {
     public MapSchema() {
-        super.addCondition("type", "Map");
-        super.addCondition("isRequired", false);
-        super.addCondition("size", null);
+        super.setRequired(false);
+        Predicate<Object> predicate = i -> i instanceof Map<?, ?>;
+        super.addPredicate("map", predicate);
     }
 
+    public void shape(Map<String, BaseSchema> schemas) {
+        Predicate<Map> predicate = p -> {
+            for (Map.Entry<String, BaseSchema> map : schemas.entrySet()) {
+                Object k = p.get(map.getKey());
+                if (!map.getValue().getRequired() && p.get(map.getKey()) == null) {
+                    return true;
+                }
+                if (!map.getValue().isValid(p.get(map.getKey()))) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        super.addPredicate("shape", predicate);
+    }
     public MapSchema required() {
-        super.addCondition("isRequired", true);
+        super.setRequired(true);
         return  this;
     }
 
     public MapSchema sizeof(Integer size) {
-        super.addCondition("size", size);
+        Predicate<Map> predicate = i -> i.size() >= size;
+        super.addPredicate("size", predicate);
         return this;
     }
 }

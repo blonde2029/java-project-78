@@ -1,23 +1,26 @@
 package hexlet.code;
 
+import java.util.function.Predicate;
+
 public class StringSchema extends BaseSchema {
     public StringSchema() {
-        super.addCondition("type", "String");
-        super.addCondition("isRequired", false);
-        super.addCondition("minValueLength", 0);
-        super.addCondition("containsValue", "");
+        super.setRequired(false);
+        Predicate<Object> predicate = i -> i instanceof String;
+        super.addPredicate("string", predicate);
     }
 
     public StringSchema required() {
-        super.addCondition("isRequired", true);
+        super.setRequired(true);
         return this;
     }
     public StringSchema minLength(Integer length) {
-        super.addCondition("minValueLength", length);
+        Predicate<String> predicate = i -> i.length() >= length;
+        super.addPredicate("length", predicate);
         return this;
     }
     public StringSchema contains(String content) {
-        super.addCondition("containsValue", content);
+        Predicate<String> predicate = i -> i.contains(content);
+        super.addPredicate("contains", predicate);
         return this;
     }
 }

@@ -2,57 +2,38 @@ package hexlet.code;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Predicate;
 
 public abstract class BaseSchema {
-    private final Map<String, Object> conditions = new HashMap<>();
-    public void addCondition(String type, Object value) {
-        conditions.put(type, value);
+    private boolean isRequired;
+    private final Map<String, Predicate> predicates = new HashMap<>();
+    private boolean result;
+
+    public void setRequired(boolean b) {
+        isRequired = b;
+    }
+    public boolean getRequired() {
+        return isRequired;
+    }
+    public void addPredicate(String type, Predicate predicate) {
+        predicates.put(type, predicate);
     }
 
     public boolean isValid(Object data) {
-        boolean isRequired = (boolean) conditions.get("isRequired");
-        if (!isRequired) {
+        result = true;
+        if (!isRequired && !(data instanceof Map<?, ?>) && (data == null || data == "")) {
             return true;
-        }
-        if ((data == null || data == "")) {
+        } else if (isRequired && (data == null || data == "")) {
             return false;
         }
-        if (conditions.get("type").equals("String")) {
-            if (!(data instanceof String)) {
-                return false;
-            }
-            if (data.toString().length() < (int) conditions.get("minValueLength")) {
-                return false;
-            }
-            if (!data.toString().contains(conditions.get("containsValue").toString())) {
-                return  false;
+
+        for (Map.Entry<String, Predicate> entry : predicates.entrySet()) {
+            Predicate<Object> predicate = entry.getValue();
+            if (!predicate.test(data)) {
+                result = false;
+                break;
             }
         }
-        if (conditions.get("type").equals("Number")) {
-            if (!(data instanceof Integer)) {
-                return false;
-            }
-            if ((boolean) conditions.get("needPositive") && Integer.parseInt(data.toString()) <= 0) {
-                return false;
-            }
-            Integer startRange = (Integer) conditions.get("startRange");
-            Integer endRange = (Integer) conditions.get("endRange");
-            if (startRange != null && Integer.parseInt(data.toString()) < startRange) {
-                return false;
-            }
-            if (endRange != null && Integer.parseInt(data.toString()) > endRange) {
-                return false;
-            }
-        }
-        if (conditions.get("type").equals("Map")) {
-            if (!(data instanceof Map)) {
-                return false;
-            }
-            Integer size = (Integer) conditions.get("size");
-            if (size != null && ((Map) data).size() < size) {
-                return false;
-            }
-        }
-        return true;
+        return result;
     }
 }
