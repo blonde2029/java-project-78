@@ -9,19 +9,19 @@ public abstract class BaseSchema {
     private final Map<String, Predicate> predicates = new HashMap<>();
     private boolean result;
 
-    public void setRequired(boolean b) {
+    public final void setRequired(boolean b) {
         isRequired = b;
     }
-    public boolean getRequired() {
+    public final boolean getRequired() {
         return isRequired;
     }
-    public void addPredicate(String type, Predicate predicate) {
+    public final void addPredicate(String type, Predicate predicate) {
         predicates.put(type, predicate);
     }
 
-    public boolean isValid(Object data) {
+    public final boolean isValid(Object data) {
         result = true;
-        if (!isRequired && !(data instanceof Map) && (data == null || data == "")) {
+        if (!isRequired &&  (data == null || data == "")) {
             return true;
         } else if (isRequired && (data == null || data == "")) {
             return false;
