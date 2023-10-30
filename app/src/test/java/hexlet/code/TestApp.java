@@ -35,6 +35,10 @@ public class TestApp {
         assertThat(schema.contains("whatthe").isValid("what does the fox say")).isFalse(); // false
 
         assertThat(schema.isValid("what does the fox say")).isFalse(); // false
+        StringSchema schema2 = v.string();
+        schema2.minLength(10);
+        assertThat(schema2.isValid("hello")).isFalse(); // false
+        assertThat(schema2.isValid("Hello, World!")).isTrue(); //true
     }
     @Test
     public void testValidatorNumber() {

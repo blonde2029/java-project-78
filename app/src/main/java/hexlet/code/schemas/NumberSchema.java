@@ -15,15 +15,15 @@ public final class NumberSchema extends BaseSchema {
     }
 
     public NumberSchema positive() {
-        Predicate<Integer> predicate = i -> i != null ? i > 0 : false;
+        Predicate<Object> predicate = i -> i != null && (Integer) i > 0;
         super.addPredicate("positive", predicate);
         return this;
     }
 
     public NumberSchema range(Integer start, Integer end) {
-        Predicate<Integer> predicate1 = i -> start != null ? i >= start : true;
+        Predicate<Object> predicate1 = i -> start == null || (Integer) i >= start;
         super.addPredicate("start", predicate1);
-        Predicate<Integer> predicate2 = i -> end != null ? i <= end : true;
+        Predicate<Object> predicate2 = i -> end == null || (Integer) i <= end;
         super.addPredicate("end", predicate2);
         return this;
     }

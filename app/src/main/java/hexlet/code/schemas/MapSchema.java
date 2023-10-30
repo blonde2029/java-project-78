@@ -11,11 +11,11 @@ public final class MapSchema extends BaseSchema {
     }
 
     public void shape(Map<String, BaseSchema> schemas) {
-        Predicate<Map> predicate = p -> {
+        Predicate<Object> predicate = p -> {
             for (Map.Entry<String, BaseSchema> map : schemas.entrySet()) {
-                if (!map.getValue().getRequired() && p.get(map.getKey()) == null) {
+                if (!map.getValue().getRequired() && ((Map) p).get(map.getKey()) == null) {
                     return true;
-                } else if (!map.getValue().isValid(p.get(map.getKey()))) {
+                } else if (!map.getValue().isValid(((Map) p).get(map.getKey()))) {
                     return false;
                 }
             }
@@ -29,7 +29,7 @@ public final class MapSchema extends BaseSchema {
     }
 
     public MapSchema sizeof(Integer size) {
-        Predicate<Map> predicate = i -> i.size() >= size;
+        Predicate<Object> predicate = i -> ((Map) i).size() >= size;
         super.addPredicate("size", predicate);
         return this;
     }

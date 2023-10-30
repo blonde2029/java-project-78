@@ -14,12 +14,12 @@ public final class StringSchema extends BaseSchema {
         return this;
     }
     public StringSchema minLength(Integer length) {
-        Predicate<String> predicate = i -> i.length() >= length;
+        Predicate<Object> predicate = i -> i.toString().length() >= length;
         super.addPredicate("length", predicate);
         return this;
     }
     public StringSchema contains(String content) {
-        Predicate<String> predicate = i -> i.contains(content);
+        Predicate<Object> predicate = i -> i.toString().contains(content);
         super.addPredicate("contains", predicate);
         return this;
     }
