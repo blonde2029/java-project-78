@@ -6,3 +6,5 @@ Validating String:
 [![asciicast](https://asciinema.org/a/BY0ZRa6nH4zFWlwA5jCzkBBFI.svg)](https://asciinema.org/a/BY0ZRa6nH4zFWlwA5jCzkBBFI)
 Validating Number: 
 [![asciicast](https://asciinema.org/a/D6mDRDSwwjoaXRawufWv775Bu.svg)](https://asciinema.org/a/D6mDRDSwwjoaXRawufWv775Bu)
+Validating Map(including subMap):
+[![asciicast](https://asciinema.org/a/XxvhHZoCelPpJjlbkDEaVApav.svg)](https://asciinema.org/a/XxvhHZoCelPpJjlbkDEaVApav)
