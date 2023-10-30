@@ -1,4 +1,4 @@
-package hexlet.code;
+package hexlet.code.schemas;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public abstract class BaseSchema {
 
     public boolean isValid(Object data) {
         result = true;
-        if (!isRequired && !(data instanceof Map<?, ?>) && (data == null || data == "")) {
+        if (!isRequired && !(data instanceof Map) && (data == null || data == "")) {
             return true;
         } else if (isRequired && (data == null || data == "")) {
             return false;
