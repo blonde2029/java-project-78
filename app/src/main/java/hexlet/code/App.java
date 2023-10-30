@@ -4,6 +4,8 @@ package hexlet.code;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 public class App {
     public static void main(String[] args) {
@@ -14,7 +16,11 @@ public class App {
 // Пока не вызван метод required(), null считается валидным
         schema1.isValid(null); // true
         schema1.positive().isValid(null);
+        schema1.required();
 
+        System.out.println(schema1.isValid(null)); // false
+        System.out.println(schema1.isValid("5")); // false
+        System.out.println(schema1.isValid(10));
 
         Validator v = new Validator();
 
