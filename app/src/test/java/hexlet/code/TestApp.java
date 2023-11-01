@@ -40,13 +40,14 @@ public class TestApp {
         assertThat(schema2.isValid("hello")).isFalse(); // false
         assertThat(schema2.isValid("Hello, World!")).isTrue(); //true
     }
+
     @Test
     public void testValidatorNumber() {
         Validator v = new Validator();
 
         NumberSchema schema = v.number();
 
-// Пока не вызван метод required(), null считается валидным
+        // Пока не вызван метод required(), null считается валидным
         assertThat(schema.isValid(null)).isTrue(); // true
         assertThat(schema.positive().isValid(null)).isTrue(); // true
 
@@ -56,9 +57,9 @@ public class TestApp {
         assertThat(schema.isValid("5")).isFalse(); // false
         assertThat(schema.isValid(10)).isTrue(); // true
 
-// Потому что ранее мы вызвали метод positive()
+        // Потому что ранее мы вызвали метод positive()
         assertThat(schema.isValid(-10)).isFalse(); // false
-//  Ноль — не положительное число
+        //  Ноль — не положительное число
         assertThat(schema.isValid(0)).isFalse(); // false
 
         schema.range(5, 10);
@@ -106,22 +107,22 @@ public class TestApp {
 
         MapSchema schema = v.map();
 
-// shape позволяет описывать валидацию для значений каждого ключа объекта Map
-// Создаем набор схем для проверки каждого ключа проверяемого объекта
-// Для значения каждого ключа - своя схема
+        // shape позволяет описывать валидацию для значений каждого ключа объекта Map
+        // Создаем набор схем для проверки каждого ключа проверяемого объекта
+        // Для значения каждого ключа - своя схема
         Map<String, BaseSchema> schemas = new HashMap<>();
 
-// Определяем схемы валидации для значений свойств "name" и "age"
-// Имя должно быть строкой, обязательно для заполнения
+        // Определяем схемы валидации для значений свойств "name" и "age"
+        // Имя должно быть строкой, обязательно для заполнения
         schemas.put("name", v.string().required());
-// Возраст должен быть положительным числом
+        // Возраст должен быть положительным числом
         schemas.put("age", v.number().positive());
 
-// Настраиваем схему `MapSchema`
-// Передаем созданный набор схем в метод shape()
+        // Настраиваем схему `MapSchema`
+        // Передаем созданный набор схем в метод shape()
         schema.shape(schemas);
 
-// Проверяем объекты
+        // Проверяем объекты
         Map<String, Object> human1 = new HashMap<>();
         human1.put("name", "Kolya");
         human1.put("age", 100);

@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 public final class MapSchema extends BaseSchema {
     public MapSchema() {
-        super.setRequired(false);
+        super.isRequired = false;
         Predicate<Object> predicate = i -> i instanceof Map<?, ?>;
         super.addPredicate("map", predicate);
     }
@@ -13,7 +13,7 @@ public final class MapSchema extends BaseSchema {
     public void shape(Map<String, BaseSchema> schemas) {
         Predicate<Object> predicate = p -> {
             for (Map.Entry<String, BaseSchema> map : schemas.entrySet()) {
-                if (!map.getValue().getRequired() && ((Map) p).get(map.getKey()) == null) {
+                if (!map.getValue().isRequired && ((Map) p).get(map.getKey()) == null) {
                     return true;
                 } else if (!map.getValue().isValid(((Map) p).get(map.getKey()))) {
                     return false;
@@ -23,8 +23,9 @@ public final class MapSchema extends BaseSchema {
         };
         super.addPredicate("shape", predicate);
     }
+
     public MapSchema required() {
-        super.setRequired(true);
+        super.isRequired = true;
         return  this;
     }
 
