@@ -8,14 +8,6 @@ public abstract class BaseSchema {
     protected boolean isRequired;
     private final Map<String, Predicate<Object>> predicates = new LinkedHashMap<>();
 
-//    public final void setRequired(boolean b) {
-//        isRequired = b;
-//    }
-//
-//    public final boolean getRequired() {
-//        return isRequired;
-//    }
-
     public final void addPredicate(String type, Predicate<Object> predicate) {
         predicates.put(type, predicate);
     }
