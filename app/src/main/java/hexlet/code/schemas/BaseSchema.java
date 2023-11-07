@@ -14,9 +14,9 @@ public abstract class BaseSchema {
 
     public final boolean isValid(Object data) {
         boolean result = true;
-        if (!isRequired &&  (data == null || data == "")) {
+        if (!isRequired && data == null) {
             return true;
-        } else if (isRequired && (data == null || data == "")) {
+        } else if (isRequired && data == null) {
             return false;
         }
 

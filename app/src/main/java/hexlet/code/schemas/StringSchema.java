@@ -11,6 +11,8 @@ public final class StringSchema extends BaseSchema {
 
     public StringSchema required() {
         super.isRequired = true;
+        Predicate<Object> predicate1 = i -> i != "";
+        super.addPredicate("notEmpty", predicate1);
         return this;
     }
 
